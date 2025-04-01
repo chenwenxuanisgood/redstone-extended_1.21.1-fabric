@@ -1,0 +1,4 @@
+{
+  "block.redstone-extended.redstone_timer": "红石计时器",
+  "text.block.redstone_timer.use_text.show_need_to_wait_tick": "需要等待的刻："
+}

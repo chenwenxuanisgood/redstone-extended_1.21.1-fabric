@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "redstone-extended:block/redstone_timer",
+			"y": 270
+		},
+		"facing=north": {
+			"model": "redstone-extended:block/redstone_timer",
+			"y": 180
+		},
+		"facing=south": {
+			"model": "redstone-extended:block/redstone_timer"
+		},
+		"facing=west": {
+			"model": "redstone-extended:block/redstone_timer",
+			"y": 90
+		}
+	}
+}

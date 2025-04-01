@@ -1,0 +1,4 @@
+{
+  "block.redstone-extended.redstone_timer": "Redstone Timer",
+  "text.block.redstone_timer.use_text.show_need_to_wait_tick": "Need to wait tick:"
+}
