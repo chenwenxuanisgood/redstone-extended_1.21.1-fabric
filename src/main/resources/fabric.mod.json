@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/chenwenxuanisgood/redstone-extended_1.21.1-fabric"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/redstone-extended/icon.png",
