@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "redstone-extended:block/smooth_stone",
-		"1": "redstone-extended:block/redstone_timer",
+		"1": "redstone-extended:block/redstone_timer_on",
 		"particle": "redstone-extended:block/smooth_stone"
 	},
 	"elements": [

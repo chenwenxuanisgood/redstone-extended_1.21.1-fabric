@@ -58,7 +58,6 @@ public abstract class AbstractRedstoneGateBlockWithEntity extends AbstractRedsto
     protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!this.isLocked(world, pos, state)) {
             boolean bl = state.get(POWERED);
-            RedstoneExtended.LOGGER.info(String.valueOf(state.getBlock()));
             boolean bl2 = this.hasPower(world, pos, state);
             if (bl && !bl2) {
                 world.setBlockState(pos, state.with(POWERED, false), Block.NOTIFY_LISTENERS);
@@ -92,7 +91,20 @@ public abstract class AbstractRedstoneGateBlockWithEntity extends AbstractRedsto
     @Override
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (state.canPlaceAt(world, pos)) {
-            this.updatePowered(world, pos, state);
+            if (!this.isLocked(world, pos, state)) {
+                boolean bl = state.get(POWERED);
+                boolean bl2 = this.hasPower(world, pos, state);
+                if (bl != bl2 && !world.getBlockTickScheduler().isTicking(pos, this)) {
+                    TickPriority tickPriority = TickPriority.HIGH;
+                    if (this.isTargetNotAligned(world, pos, state)) {
+                        tickPriority = TickPriority.EXTREMELY_HIGH;
+                    } else if (bl) {
+                        tickPriority = TickPriority.VERY_HIGH;
+                    }
+
+                    world.scheduleBlockTick(pos, this, this.getUpdateDelayInternal(state, world, pos), tickPriority);
+                }
+            }
         } else {
             BlockEntity blockEntity = state.hasBlockEntity() ? world.getBlockEntity(pos) : null;
             dropStacks(state, world, pos, blockEntity);
@@ -105,7 +117,5 @@ public abstract class AbstractRedstoneGateBlockWithEntity extends AbstractRedsto
     }
 
     @Override
-    protected int getUpdateDelayInternal(BlockState state) {
-        return 0;
-    }
+    protected abstract int getUpdateDelayInternal(BlockState state);
 }

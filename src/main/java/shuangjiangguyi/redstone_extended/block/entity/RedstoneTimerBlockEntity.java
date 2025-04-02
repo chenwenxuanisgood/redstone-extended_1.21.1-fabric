@@ -20,30 +20,14 @@ public class RedstoneTimerBlockEntity extends BlockEntity {
     }
 
     public void tick(World world, BlockPos pos, BlockState state, RedstoneTimerBlockEntity blockEntity) {
-        if (state.getBlock() instanceof RedstoneTimerBlock) {
-            int power = 0;
-            if (state.get(HorizontalFacingBlock.FACING) == Direction.NORTH || state.get(HorizontalFacingBlock.FACING) == Direction.SOUTH) {
-                if (world.isEmittingRedstonePower(pos.west(1), Direction.EAST)) {
-                    power += ((AbstractBlockMixinInterface) world.getBlockState(pos.west(1)).getBlock()).
-                            publicGetStrongRedstonePower(world.getBlockState(pos.west(1)), world, pos, Direction.EAST);
-                }
-                if (world.isEmittingRedstonePower(pos.east(1), Direction.WEST)) {
-                    power += ((AbstractBlockMixinInterface) world.getBlockState(pos.east(1)).getBlock()).
-                            publicGetStrongRedstonePower(world.getBlockState(pos.east(1)), world, pos, Direction.WEST);
-                }
-            }
-            else if (state.get(HorizontalFacingBlock.FACING) == Direction.WEST || state.get(HorizontalFacingBlock.FACING) == Direction.EAST) {
-                if (world.isEmittingRedstonePower(pos.north(1), Direction.SOUTH)) {
-                    power += ((AbstractBlockMixinInterface) world.getBlockState(pos.east(1)).getBlock()).
-                            publicGetStrongRedstonePower(world.getBlockState(pos.east(1)), world, pos, Direction.SOUTH);
-                }
-                if (world.isEmittingRedstonePower(pos.south(1), Direction.NORTH)) {
-                    power += ((AbstractBlockMixinInterface) world.getBlockState(pos.east(1)).getBlock()).
-                            publicGetStrongRedstonePower(world.getBlockState(pos.east(1)), world, pos, Direction.NORTH);
-                }
-            }
-            blockEntity.needWaitToTick = 20 + (power * 20);
-        }
+        Direction direction = state.get(RedstoneTimerBlock.FACING);
+        Direction direction2 = direction.rotateYClockwise();
+        Direction direction3 = direction.rotateYCounterclockwise();
+        boolean bl = ((RedstoneTimerBlock) state.getBlock()).getSideInputFromGatesOnly();
+        int power = (world.getEmittedRedstonePower(pos.offset(direction2), direction2, false)) +
+                (world.getEmittedRedstonePower(pos.offset(direction3), direction3, false));
+        blockEntity.needWaitToTick = 20 + (power * 20);
+
     }
 
     @Override

@@ -1,10 +1,7 @@
 package shuangjiangguyi.redstone_extended.block.custom;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -22,6 +19,8 @@ import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
@@ -29,7 +28,10 @@ import org.jetbrains.annotations.Nullable;
 import shuangjiangguyi.redstone_extended.block.entity.RedstoneExtendedBlockEntities;
 import shuangjiangguyi.redstone_extended.block.entity.RedstoneTimerBlockEntity;
 
+import java.util.Objects;
+
 public class RedstoneTimerBlock extends AbstractRedstoneGateBlockWithEntity {
+    protected static final VoxelShape SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 4.0, 16.0);
     public static final BooleanProperty LOCKED = Properties.LOCKED;
     public static final EnumProperty<Type> TYPE = EnumProperty.of("type", Type.class);
     public static final BooleanProperty POWERED = Properties.POWERED;
@@ -42,6 +44,12 @@ public class RedstoneTimerBlock extends AbstractRedstoneGateBlockWithEntity {
     @Override
     protected MapCodec<? extends AbstractRedstoneGateBlockWithEntity> getCodec() {
         return CODEC;
+    }
+
+
+    @Override
+    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -83,7 +91,12 @@ public class RedstoneTimerBlock extends AbstractRedstoneGateBlockWithEntity {
 
     @Override
     protected int getUpdateDelayInternal(BlockState state, World world, BlockPos pos) {
-        return ((RedstoneTimerBlockEntity) world.getBlockEntity(pos)).needWaitToTick;
+        return ((RedstoneTimerBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).needWaitToTick;
+    }
+
+    @Override
+    protected int getUpdateDelayInternal(BlockState state) {
+        return 0;
     }
 
     public enum Type implements StringIdentifiable {
@@ -114,18 +127,18 @@ public class RedstoneTimerBlock extends AbstractRedstoneGateBlockWithEntity {
             return Blocks.AIR.getDefaultState();
         } else {
             return !world.isClient() && direction.getAxis() != state.get(FACING).getAxis()
-                    ? state.with(LOCKED, this.isLocked(world, pos, state))
+                    ? state.with(LOCKED, false)
                     : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
         }
     }
 
     @Override
     public boolean isLocked(WorldView world, BlockPos pos, BlockState state) {
-        return this.getMaxInputLevelSides(world, pos, state) > 0;
+        return false;
     }
 
     @Override
-    protected boolean getSideInputFromGatesOnly() {
+    public boolean getSideInputFromGatesOnly() {
         return true;
     }
 

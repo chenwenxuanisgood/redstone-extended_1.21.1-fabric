@@ -1,18 +1,33 @@
 {
 	"variants": {
-		"facing=east": {
+		"facing=east,powered=false": {
 			"model": "redstone-extended:block/redstone_timer",
 			"y": 270
 		},
-		"facing=north": {
+		"facing=north,powered=false": {
 			"model": "redstone-extended:block/redstone_timer",
 			"y": 180
 		},
-		"facing=south": {
+		"facing=south,powered=false": {
 			"model": "redstone-extended:block/redstone_timer"
 		},
-		"facing=west": {
+		"facing=west,powered=false": {
 			"model": "redstone-extended:block/redstone_timer",
+			"y": 90
+		},
+		"facing=east,powered=true": {
+			"model": "redstone-extended:block/redstone_timer_on",
+			"y": 270
+		},
+		"facing=north,powered=true": {
+			"model": "redstone-extended:block/redstone_timer_on",
+			"y": 180
+		},
+		"facing=south,powered=true": {
+			"model": "redstone-extended:block/redstone_timer_on"
+		},
+		"facing=west,powered=true": {
+			"model": "redstone-extended:block/redstone_timer_on",
 			"y": 90
 		}
 	}
