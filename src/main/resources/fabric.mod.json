@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"shuangjiangguyi.redstone_extended.RedstoneExtendedDataGenerator"
+		],
+		"client": [
+			"shuangjiangguyi.redstone_extended.RedstoneExtendedClient"
 		]
 	},
 	"mixins": [
